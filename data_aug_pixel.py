@@ -27,20 +27,20 @@
 #     cv2.imwrite('EXK1-00001.jpg', img_resized)
 
 # 아래 코드 사용 시 전체적인 이미지 축소로 인해 화질 저하
-import os
-import cv2
+# import os
+# import cv2
 
-input_dir = "D:\\pill\\image\\EXK\\ee"
-output_dir = "D:\\pill\\image\\EXK\\pixel"
+# input_dir = "D:\\pill\\image\\EXK\\ee"
+# output_dir = "D:\\pill\\image\\EXK\\pixel"
 
-# Loop over all files in the input directory
-for filename in os.listdir(input_dir):
-    # Read the image
-    image = cv2.imread(os.path.join(input_dir, filename))
-    # Resize the image to 75x75 pixels
-    resized_image = cv2.resize(image, (3000, 3000))
-    # Save the resized image to the output directory
-    cv2.imwrite(os.path.join(output_dir, '1_' + filename), resized_image)
+# # Loop over all files in the input directory
+# for filename in os.listdir(input_dir):
+#     # Read the image
+#     image = cv2.imread(os.path.join(input_dir, filename))
+#     # Resize the image to 75x75 pixels
+#     resized_image = cv2.resize(image, (3000, 3000))
+#     # Save the resized image to the output directory
+#     cv2.imwrite(os.path.join(output_dir, '1_' + filename), resized_image)
 
 
 # 아래 코드 사용 시 전체적인 픽셀 감소 화질 저하 없음
@@ -48,11 +48,11 @@ import os
 import cv2
 import imgaug.augmenters as iaa
 
-input_dir = "D:\\pill\\image\\EXK\\ee"
-output_dir = "D:\\pill\\image\\EXK\\size"
+input_dir = "D:\\datasets\\training_set\\EX2"
+output_dir = "C:\\Users\\LHS\\Desktop\\pixel"
 
 # Define augmenter that resizes images to a random scale between 50% and 100% of their original size
-resize_augmenter = iaa.Resize((0.02, 0.02))
+resize_augmenter = iaa.Resize((1.1, 1.1))
 
 # Loop through each image in the input directory
 for filename in os.listdir(input_dir):
@@ -65,5 +65,5 @@ for filename in os.listdir(input_dir):
     resized_image = resize_augmenter.augment_image(image)
     
     # Save the resized image to the output directory
-    output_path = os.path.join(output_dir, filename)
+    output_path = os.path.join(output_dir, 'siez+10_' + filename)
     cv2.imwrite(output_path, resized_image)

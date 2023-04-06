@@ -4,8 +4,8 @@ import os
 import cv2
 import imgaug.augmenters as iaa
 
-input_dir = "D:\\pill\\image\\EXK\\rotate"
-output_dir = "D:\\pill\\image\\EXK\\multiply"
+input_dir = "D:\\datasets\\training_set\\EX2"
+output_dir = "D:\\datasets\\training_set\\EX2"
 
 # Define augmenter to adjust brightness
 # 밝기 조절 1> = 밝아짐, 1< = 어두워짐
@@ -21,5 +21,5 @@ for filename in os.listdir(input_dir):
     img_aug = aug(image=img)
     
     # Save augmented image to output_dir
-    output_path = os.path.join(output_dir, filename)
+    output_path = os.path.join(output_dir, 'multiply' + filename)
     cv2.imwrite(output_path, img_aug)

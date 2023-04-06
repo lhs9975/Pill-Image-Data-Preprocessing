@@ -6,10 +6,10 @@ import os
 # Gray Scale, Histogram Equization, desoise 동시 수행
 
 # Directory containing the input images
-input_dir = "D:\\pill\\image\\EXK\\ee"
+input_dir = "D:\\pill\\image\\EXK\\bb"
 
 # Directory where the output images will be saved
-output_dir = "D:\\pill\\image\\EXK\\EXK12"
+output_dir = "D:\\datasets\\training_set\\EX2"
 
 # Define the structuring element for the Black Hat operation
 # 값 범위 조절 필요, 커널의 모형으로 MORPH_RECT = 직사각형
@@ -36,7 +36,7 @@ for filename in os.listdir(input_dir):
     blackhat = cv2.morphologyEx(denoised, cv2.MORPH_BLACKHAT, kernel)
 
     # Save the output image
-    out_path = os.path.join(output_dir, 'rembg10700_' + filename)
+    out_path = os.path.join(output_dir, 'blackhat_' + filename)
     cv2.imwrite(out_path, blackhat)
 
     print(f"Processed {filename} and saved to {out_path}")
