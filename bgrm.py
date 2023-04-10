@@ -6,8 +6,8 @@ from rembg import remove
 from PIL import Image 
 
 # 입력 이미지 불러오기
-for i in range(1,3,1):
-    img = Image.open("D:\\pill\\image\\EXK\\aa\\EXK1-%05d.png" % i)
+for i in range(1,7,1):
+    img = Image.open("D:\\pill\\image\\three\\original\\EX-%04d.png" % i)
 
 
 # 배경 제거하기
@@ -15,4 +15,4 @@ for i in range(1,3,1):
 
 
 # 변경된 이미지 저장하기
-    out.save("D:\\pill\\image\\EXK\\aa\\EXK1-%05d.png" % i)
+    out.save("D:\\pill\\image\\three\\bgrm\\EX-%04d.png" % i)

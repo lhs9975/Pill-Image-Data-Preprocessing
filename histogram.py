@@ -4,10 +4,10 @@ import os
 # Gray Scale 과 Histogram Equization 동시 수행
 
 # Directory containing the input images
-input_dir = "D:\\pill\\image\\EXK\\EXK2(rembg)"
+input_dir = "D:\\pill\\image\\three\\bgrm"
 
 # Directory where the output images will be saved
-output_dir = "D:\\pill\\image\\EXK\\EXK8(rembg_his)"
+output_dir = "D:\\pill\\image\\three\\histogram"
 
 # Iterate over all the files in the input directory
 for filename in os.listdir(input_dir):
@@ -22,7 +22,7 @@ for filename in os.listdir(input_dir):
     equ = cv2.equalizeHist(gray)
     
     # Save the output image
-    out_path = os.path.join(output_dir, 'origianl_' + filename)
+    out_path = os.path.join(output_dir, 'histogram_' + filename)
     cv2.imwrite(out_path, equ)
 
     print(f"Processed {filename} and saved to {out_path}")

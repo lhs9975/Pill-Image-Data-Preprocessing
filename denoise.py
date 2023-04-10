@@ -6,10 +6,10 @@ import os
 # Gray Scale, Histogram Equization, desoise 동시 수행
 
 # Directory containing the input images
-input_dir = "D:\\pill\\image\\EXK\\ee"
+input_dir = "D:\\pill\\image\\three\\bgrm"
 
 # Directory where the output images will be saved
-output_dir = "D:\\pill\\image\\EXK\\EXK12"
+output_dir = "D:\\pill\\image\\three\\denoise"
 
 # Iterate over all the files in the input directory
 for filename in os.listdir(input_dir):
@@ -24,10 +24,10 @@ for filename in os.listdir(input_dir):
     equ = cv2.equalizeHist(gray)
 
     # Apply Non-Local Means denoising to the image
-    denoised = cv2.fastNlMeansDenoising(equ, None, h=40, templateWindowSize=7, searchWindowSize=21)
+    denoised = cv2.fastNlMeansDenoising(equ, None, h=20, templateWindowSize=7, searchWindowSize=21)
 
     # Save the output image
-    out_path = os.path.join(output_dir, 'original2_' + filename)
+    out_path = os.path.join(output_dir, 'denoise_' + filename)
     cv2.imwrite(out_path, denoised)
 
     print(f"Processed {filename} and saved to {out_path}")

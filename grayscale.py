@@ -4,8 +4,8 @@ import cv2
 # Set the directory where the images are stored
 # dir_path_i = 입력 이미지 폴더 경로
 # dir_path_o = 출력 이미지 폴더 경로
-dir_path_i = 'D:\\pill\\image\\EXK\\EXK2(rembg)'
-dir_path_o = 'D:\\pill\\image\\EXK\\EXK6'
+dir_path_i = 'D:\\pill\\image\\three\\bgrm'
+dir_path_o = 'D:\\pill\\image\\three\\histogram'
 
 # Loop through all files in the directory
 for filename in os.listdir(dir_path_i):
@@ -16,6 +16,6 @@ for filename in os.listdir(dir_path_i):
         img = cv2.imread(os.path.join(dir_path_i, filename), cv2.IMREAD_GRAYSCALE)
 
         # Save the binarized image
-        cv2.imwrite(os.path.join(dir_path_o, 'rembg_' + filename), img)
+        cv2.imwrite(os.path.join(dir_path_o, 'gray_' + filename), img)
 
 print(f"Processed {filename} and saved to {dir_path_o}")
