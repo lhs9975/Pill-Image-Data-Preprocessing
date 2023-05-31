@@ -27,6 +27,7 @@ for filename in os.listdir(input_dir):
     clahe_img = clahe.apply(gray)
 
     # Denoise (using Gaussian filter)
+    # (5, 5) 매개변수는 필터의 커널 크기를 지정하고 0은 커널 크기를 기준으로 가우시안 커널의 표준 편차가 자동으로 계산됨을 나타냄
     denoised = cv2.GaussianBlur(clahe_img, (5, 5), 0)
 
     # Perform Black Hat operation
