@@ -8,32 +8,33 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 # seed 값 설정
 seed = 0
 numpy.random.seed(seed)
-tf.set_random_seed(seed)
+tf.random.set_seed(seed)
 
-from keras import applications
+from tensorflow.keras import applications
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 from keras.models import Sequential
 from keras.layers import Dropout, Flatten, Dense
 from keras.models import Model
 
+
 LossFunction = 'categorical_crossentropy'
 ClassMode = 'categorical'
-img_width, img_height = 720, 1280
+img_width, img_height = 1410, 1880
 
-nb_train_samples = 729221
-nb_validation_samples = 81630
-NumberOfClass = 849
+nb_train_samples = 189
+nb_validation_samples = 125
+NumberOfClass = 2
 
 epochs = 1000
 batchSize = 16
 
 EarlyStoppingPatience = 20
 
-ParentPath = "E:\\Study\\Pill\\ForegroundTest\\FirstDis\\Class0\\"
-train_data_dir = ParentPath +'Train\\Class2'
-validation_data_dir = ParentPath + 'Validation\\Class2'
-SaveModelPath = ParentPath +  'Model\\Class2'
+ParentPath = "E:\\datasets\\"
+train_data_dir = ParentPath +'training_set\\EX1'
+validation_data_dir = ParentPath + 'validation_set'
+SaveModelPath = 'E:\\train code'
 
 SaveModelPathForEarlyStopping = SaveModelPath +  "/{epoch:02d}-{val_acc:.4f}.hdf5"
 
@@ -59,7 +60,7 @@ validation_datagen = ImageDataGenerator(
 
 train_generator = train_datagen.flow_from_directory(
     train_data_dir,
-    target_size=(img_height, img_width),
+    target_size=(64, 64),
     batch_size=batchSize,
     class_mode=ClassMode)
 
@@ -67,11 +68,11 @@ print(train_generator.class_indices)
 
 validation_generator = validation_datagen.flow_from_directory(
     validation_data_dir,
-    target_size=(img_height, img_width),
+    target_size=(64, 64),
     batch_size= batchSize,
     class_mode= ClassMode)
 
-base_model = applications.InceptionResNetV2(weights='imagenet', include_top=False, input_shape=(img_width, img_height, 3))
+base_model = applications.InceptionResNetV2(weights='imagenet', include_top=False, input_shape=(75, 75, 3))
 top_model = GetTopModel(base_model.output_shape[1:])
 
 model = Model(input= base_model.input, output= top_model(base_model.output))

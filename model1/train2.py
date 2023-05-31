@@ -9,3 +9,7 @@ tf.keras.applications.ResNet50V2(
     classes=1000,
     classifier_activation="softmax",
 )
+
+
+
+os.environ['TF_ENABLE_WINOGRAD_NONFUSED'] = '1'

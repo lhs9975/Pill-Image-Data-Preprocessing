@@ -2,7 +2,6 @@ import os
 import numpy
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from keras.layers import Dropout, Flatten, Dense
 from keras.models import Model
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -13,27 +12,13 @@ tf.random.set_seed(seed)
 
 LossFunction = 'categorical_crossentropy'
 img_width, img_height = 75, 75
-NumberOfClass = 5
 
 rootPath = 'E:\\data\\'
 
-def GetTopModel(model_input_shape):
-    model = Sequential()
-    model.add(Flatten(input_shape=model_input_shape))
-    model.add(Dense((NumberOfClass*2), activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(NumberOfClass, activation='softmax'))
-    model.compile(#optimizer='rmsprop',
-                  optimizer='adam',
-                  loss=LossFunction, metrics=['accuracy'])
+epochs = 5
+batchSize = 64
 
-    return model
-
-
-epochs = 500
-batchSize = 32
-
-imageGenerator = ImageDataGenerator(
+train_datagen = ImageDataGenerator(
     rescale=1./255,
     rotation_range=10,
     width_shift_range=0.05,
@@ -45,31 +30,44 @@ imageGenerator = ImageDataGenerator(
     zoom_range=0.1,
 )
 
-trainGen = imageGenerator.flow_from_directory(
-    os.path.join(rootPath, 'train\\imprint\\datasets'),
+validation_datagen = ImageDataGenerator(
+    rescale=1./255
+)
+
+test_datagen = ImageDataGenerator(
+    rescale=1./255
+)
+
+trainGen = train_datagen.flow_from_directory(
+    os.path.join(rootPath, 'train'),
     target_size=(img_width, img_height),
     batch_size=batchSize,
     subset='training'
 )
 
-validationGen = imageGenerator.flow_from_directory(
-    os.path.join(rootPath, 'valid\\imprint\\datasets'),
+validationGen = validation_datagen.flow_from_directory(
+    os.path.join(rootPath, 'valid'),
     target_size=(img_width, img_height),
     batch_size=batchSize,
     subset='validation'
 )
 
-from tensorflow.keras.applications import ResNet50
+testGen = test_datagen.flow_from_directory(
+    os.path.join(rootPath, 'test'),
+    target_size=(img_width, img_height),
+    batch_size=batchSize
+)
+
+from tensorflow.keras.applications.mobilenet import MobileNet
 from tensorflow.keras.models import Sequential
-from tensorflow.keras import layers
+
 
 model = Sequential()
-model.add(ResNet50(include_top=True, weights=None, input_shape=None, classes=5))
+model.add(MobileNet(include_top=True, weights=None, input_shape=(224, 224, 3), classes=27))
 
 model.compile(loss=LossFunction,
               optimizer='adam',
               metrics=['acc'])
-
 
 history = model.fit_generator(
     trainGen, 
@@ -82,9 +80,7 @@ history = model.fit_generator(
 from keras.models import load_model
 from tensorflow.python.keras.models import load_model
 
-model.save('E:\\model\\mnist_mlp_model_imprint_all.h5', save_format='h5')
-
-
+model.save('E:\\model\\MobileNet_test2.h5', save_format='h5')
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -102,11 +98,11 @@ plt.xlabel('epoch')
 plt.ylabel('loss/acc')
 plt.show()
 
-# y_vloss=history.history['loss']
-# y_acc=history.history['acc']
 
-# x_len = np.arange(len(y_acc))
-# plt.plot(x_len, y_vloss, "o", c="red", markersize=3)
-# plt.plot(x_len, y_acc, "o", c="blue", markersize=3)
 
-# plt.show()
+# 저장된 모델 파일 로드
+model = load_model('E:\\model\\MobileNet_test2.h5')
+
+# 테스트셋 평가
+results = model.evaluate(testGen)
+results

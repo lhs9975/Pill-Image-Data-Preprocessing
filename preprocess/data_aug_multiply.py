@@ -4,8 +4,8 @@ import os
 import cv2
 import imgaug.augmenters as iaa
 
-input_dir = "D:\\datasets\\training_set\\EX2"
-output_dir = "D:\\datasets\\training_set\\EX2"
+input_dir = "E:\\datasets\\training_set\\EX2"
+output_dir = "E:\\datasets\\training_set\\EX2"
 
 # Define augmenter to adjust brightness
 # 밝기 조절 1> = 밝아짐, 1< = 어두워짐

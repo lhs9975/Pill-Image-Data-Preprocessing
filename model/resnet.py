@@ -17,20 +17,20 @@ NumberOfClass = 5
 
 rootPath = 'E:\\data\\'
 
-def GetTopModel(model_input_shape):
-    model = Sequential()
-    model.add(Flatten(input_shape=model_input_shape))
-    model.add(Dense((NumberOfClass*2), activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(NumberOfClass, activation='softmax'))
-    model.compile(#optimizer='rmsprop',
-                  optimizer='adam',
-                  loss=LossFunction, metrics=['accuracy'])
+# def GetTopModel(model_input_shape):
+#     model = Sequential()
+#     model.add(Flatten(input_shape=model_input_shape))
+#     model.add(Dense((NumberOfClass*2), activation='relu'))
+#     model.add(Dropout(0.5))
+#     model.add(Dense(NumberOfClass, activation='softmax'))
+#     model.compile(#optimizer='rmsprop',
+#                   optimizer='adam',
+#                   loss=LossFunction, metrics=['accuracy'])
 
-    return model
+#     return model
 
 
-epochs = 500
+epochs = 100
 batchSize = 32
 
 imageGenerator = ImageDataGenerator(
@@ -46,14 +46,14 @@ imageGenerator = ImageDataGenerator(
 )
 
 trainGen = imageGenerator.flow_from_directory(
-    os.path.join(rootPath, 'train\\imprint\\datasets'),
+    os.path.join(rootPath, 'train'),
     target_size=(img_width, img_height),
     batch_size=batchSize,
     subset='training'
 )
 
 validationGen = imageGenerator.flow_from_directory(
-    os.path.join(rootPath, 'valid\\imprint\\datasets'),
+    os.path.join(rootPath, 'valid'),
     target_size=(img_width, img_height),
     batch_size=batchSize,
     subset='validation'
@@ -82,7 +82,7 @@ history = model.fit_generator(
 from keras.models import load_model
 from tensorflow.python.keras.models import load_model
 
-model.save('E:\\model\\mnist_mlp_model_imprint_all.h5', save_format='h5')
+model.save('E:\\model\\mnist_mlp_model_imprint.h5', save_format='h5')
 
 
 
@@ -101,12 +101,3 @@ plt.grid()
 plt.xlabel('epoch')
 plt.ylabel('loss/acc')
 plt.show()
-
-# y_vloss=history.history['loss']
-# y_acc=history.history['acc']
-
-# x_len = np.arange(len(y_acc))
-# plt.plot(x_len, y_vloss, "o", c="red", markersize=3)
-# plt.plot(x_len, y_acc, "o", c="blue", markersize=3)
-
-# plt.show()

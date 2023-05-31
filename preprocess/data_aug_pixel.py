@@ -48,11 +48,11 @@ import os
 import cv2
 import imgaug.augmenters as iaa
 
-input_dir = "D:\\datasets\\training_set\\EX2"
-output_dir = "C:\\Users\\LHS\\Desktop\\pixel"
+input_dir = "E:\\datasets\\validation_set\\EX1"
+output_dir = "E:\\datasets\\validation_set\\EX1_1"
 
 # Define augmenter that resizes images to a random scale between 50% and 100% of their original size
-resize_augmenter = iaa.Resize((1.1, 1.1))
+resize_augmenter = iaa.Resize((1500, 1500))
 
 # Loop through each image in the input directory
 for filename in os.listdir(input_dir):
@@ -65,5 +65,5 @@ for filename in os.listdir(input_dir):
     resized_image = resize_augmenter.augment_image(image)
     
     # Save the resized image to the output directory
-    output_path = os.path.join(output_dir, 'siez+10_' + filename)
+    output_path = os.path.join(output_dir, 'size_' + filename)
     cv2.imwrite(output_path, resized_image)

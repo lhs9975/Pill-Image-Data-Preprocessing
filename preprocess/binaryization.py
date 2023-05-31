@@ -5,8 +5,8 @@ import cv2
 
 # dir_path_i = 입력 이미지 폴더 경로
 # dir_path_o = 출력 이미지 폴더 경로
-dir_path_i = 'D:\\pill\\image\\three\\bgrm'
-dir_path_o = 'D:\\pill\\image\\three\\binary'
+dir_path_i = 'E:\\data\\bgrm'
+dir_path_o = 'E:\\data\\train\\binary\\datasets'
 
 # Loop through all files in the directory
 for filename in os.listdir(dir_path_i):
@@ -17,9 +17,9 @@ for filename in os.listdir(dir_path_i):
         img = cv2.imread(os.path.join(dir_path_i, filename), cv2.IMREAD_GRAYSCALE)
 
         # Thresholding 을 이용한 이진화 진행
-        _, binary_img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)
+        _, binary_img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
 
         # 이진화 이미지 저장
-        cv2.imwrite(os.path.join(dir_path_o, 'binary_127_255_' + filename), binary_img)
+        cv2.imwrite(os.path.join(dir_path_o, filename), binary_img)
 
     print(f"Processed {filename} and saved to {dir_path_o}")

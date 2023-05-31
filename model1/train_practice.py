@@ -30,9 +30,9 @@ batchSize = 16
 EarlyStoppingPatience = 20
 
 
-train_data_dir = 'D:\\datasets\\training_set\\EX1'
-validation_data_dir = 'D:\\datasets\\validation_set'
-SaveModelPath = 'D:\\datasets\\model'
+train_data_dir = 'E:\\datasets\\training_set\\EX1'
+validation_data_dir = 'E:\\datasets\\validation_set'
+SaveModelPath = 'E:\\datasets\\model'
 
 SaveModelPathForEarlyStopping = SaveModelPath +  "/{epoch:02d}-{val_acc:.4f}.hdf5"
 

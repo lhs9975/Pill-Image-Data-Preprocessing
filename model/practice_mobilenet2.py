@@ -15,22 +15,8 @@ LossFunction = 'categorical_crossentropy'
 img_width, img_height = 75, 75
 NumberOfClass = 5
 
-rootPath = 'E:\\data\\'
 
-def GetTopModel(model_input_shape):
-    model = Sequential()
-    model.add(Flatten(input_shape=model_input_shape))
-    model.add(Dense((NumberOfClass*2), activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(NumberOfClass, activation='softmax'))
-    model.compile(#optimizer='rmsprop',
-                  optimizer='adam',
-                  loss=LossFunction, metrics=['accuracy'])
-
-    return model
-
-
-epochs = 500
+epochs = 5
 batchSize = 32
 
 imageGenerator = ImageDataGenerator(
@@ -44,6 +30,8 @@ imageGenerator = ImageDataGenerator(
     shear_range=0.1,
     zoom_range=0.1,
 )
+
+rootPath = 'E:\\data\\'
 
 trainGen = imageGenerator.flow_from_directory(
     os.path.join(rootPath, 'train\\imprint\\datasets'),
@@ -59,32 +47,41 @@ validationGen = imageGenerator.flow_from_directory(
     subset='validation'
 )
 
-from tensorflow.keras.applications import ResNet50
+from tensorflow.keras.applications.mobilenet import MobileNet
 from tensorflow.keras.models import Sequential
-from tensorflow.keras import layers
 
-model = Sequential()
-model.add(ResNet50(include_top=True, weights=None, input_shape=None, classes=5))
 
+base_model = tf.keras.applications.MobileNetV2(input_shape=(75, 75),
+                                               include_top=False,
+                                               weights='imagenet')
+
+
+    
 model.compile(loss=LossFunction,
               optimizer='adam',
               metrics=['acc'])
 
 
+nb_train_samples = 2112
+nb_validation_samples = 405
+
 history = model.fit_generator(
-    trainGen, 
+    trainGen,
+    steps_per_epoch= nb_train_samples // batchSize,
     epochs=epochs,
-    steps_per_epoch=trainGen.samples / batchSize, 
     validation_data=validationGen,
-    validation_steps=trainGen.samples / batchSize
+    validation_steps = nb_validation_samples// batchSize,
+    #use_multiprocessing=,
+    #workers=2
 )
 
-from keras.models import load_model
-from tensorflow.python.keras.models import load_model
-
-model.save('E:\\model\\mnist_mlp_model_imprint_all.h5', save_format='h5')
-
-
+# history = model.fit_generator(
+#     trainGen, 
+#     epochs=epochs,
+#     steps_per_epoch=trainGen.samples / batchSize, 
+#     validation_data=validationGen,
+#     validation_steps=trainGen.samples / batchSize
+# )
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -101,12 +98,3 @@ plt.grid()
 plt.xlabel('epoch')
 plt.ylabel('loss/acc')
 plt.show()
-
-# y_vloss=history.history['loss']
-# y_acc=history.history['acc']
-
-# x_len = np.arange(len(y_acc))
-# plt.plot(x_len, y_vloss, "o", c="red", markersize=3)
-# plt.plot(x_len, y_acc, "o", c="blue", markersize=3)
-
-# plt.show()

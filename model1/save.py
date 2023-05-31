@@ -5,6 +5,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Dropout, Flatten, Dense
 from keras.models import Model
 
+# 위노그라드 알고리즘 설정
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 seed = 0
@@ -12,10 +13,13 @@ numpy.random.seed(seed)
 tf.random.set_seed(seed)
 
 LossFunction = 'categorical_crossentropy'
-img_width, img_height = 75, 75
-NumberOfClass = 5
 
-rootPath = 'E:\\data\\'
+NumberOfClass = 2
+
+rootPath = 'E:\\datasets\\'
+SaveModelPath = 'E:\\train code'
+
+SaveModelPathForEarlyStopping = SaveModelPath +  ".hdf5"
 
 def GetTopModel(model_input_shape):
     model = Sequential()
@@ -30,8 +34,8 @@ def GetTopModel(model_input_shape):
     return model
 
 
-epochs = 500
-batchSize = 32
+epochs = 30
+batchSize = 64
 
 imageGenerator = ImageDataGenerator(
     rescale=1./255,
@@ -46,15 +50,15 @@ imageGenerator = ImageDataGenerator(
 )
 
 trainGen = imageGenerator.flow_from_directory(
-    os.path.join(rootPath, 'train\\imprint\\datasets'),
-    target_size=(img_width, img_height),
+    os.path.join(rootPath, 'training_set'),
+    target_size=(64, 64),
     batch_size=batchSize,
     subset='training'
 )
 
 validationGen = imageGenerator.flow_from_directory(
-    os.path.join(rootPath, 'valid\\imprint\\datasets'),
-    target_size=(img_width, img_height),
+    os.path.join(rootPath, 'validation_set'),
+    target_size=(64, 64),
     batch_size=batchSize,
     subset='validation'
 )
@@ -64,7 +68,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras import layers
 
 model = Sequential()
-model.add(ResNet50(include_top=True, weights=None, input_shape=None, classes=5))
+model.add(ResNet50(include_top=True, weights=None, input_shape=None, classes=2))
 
 model.compile(loss=LossFunction,
               optimizer='adam',
@@ -79,34 +83,14 @@ history = model.fit_generator(
     validation_steps=trainGen.samples / batchSize
 )
 
-from keras.models import load_model
-from tensorflow.python.keras.models import load_model
-
-model.save('E:\\model\\mnist_mlp_model_imprint_all.h5', save_format='h5')
-
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 
-acc= history.history['acc']
-y_loss = history.history['loss']
+y_vloss=history.history['loss']
+y_acc=history.history['acc']
 
-x_len = np.arange(len(y_loss))
-plt.plot(x_len, acc, marker='.', c="red", label='Trainset_acc')
-plt.plot(x_len, y_loss, marker='.', c="blue", label='Trainset_loss')
+x_len = np.arange(len(y_acc))
+plt.plot(x_len, y_vloss, "o", c="red", markersize=3)
+plt.plot(x_len, y_acc, "o", c="blue", markersize=3)
 
-plt.legend(loc='upper right')
-plt.grid()
-plt.xlabel('epoch')
-plt.ylabel('loss/acc')
 plt.show()
-
-# y_vloss=history.history['loss']
-# y_acc=history.history['acc']
-
-# x_len = np.arange(len(y_acc))
-# plt.plot(x_len, y_vloss, "o", c="red", markersize=3)
-# plt.plot(x_len, y_acc, "o", c="blue", markersize=3)
-
-# plt.show()
