@@ -7,10 +7,10 @@ import os
 
 # 다비드정100mg
 # Directory containing the input images
-input_dir = "E:\\rembg_data\\david"
+input_dir = "E:\\Pill Project\\rembg_data\\rexo"
 
 # Directory where the output images will be saved
-output_dir = "E:\\blackhat_data\\david_blackhat"
+output_dir = "E:\\Pill Project\\preprocess_data\\a"
 
 # 값 범위 조절 필요, 커널의 모형으로 MORPH_RECT = 직사각형
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50))
@@ -30,7 +30,7 @@ for filename in os.listdir(input_dir):
     # Denoise
     # h : 필터의 강도를 결정하는 파라미터, 클수록 노이즈를 더 잘 제거, 단 너무 크면 이미지의 디테일도 제거
     # h값 조절 필요
-    denoised = cv2.fastNlMeansDenoising(equ, None, h=20, templateWindowSize=7, searchWindowSize=21)
+    denoised = cv2.GaussianBlur(equ, (3, 3), 0)
 
     # Perform Black Hat operation
     blackhat = cv2.morphologyEx(denoised, cv2.MORPH_BLACKHAT, kernel)

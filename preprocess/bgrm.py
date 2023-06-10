@@ -34,6 +34,6 @@ def remove_background(input_file_path, output_file_path):
         output_file.write(output_image)
 
 # Example usage
-folder_path = "C:\\Users\\LEE\\Desktop\\original_data\\이지톤정\\앞"
+folder_path = "E:\\Pill Project\\resize_data\\pilcon"
 
 remove_background_folder(folder_path)

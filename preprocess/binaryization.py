@@ -5,8 +5,8 @@ import cv2
 
 # dir_path_i = 입력 이미지 폴더 경로
 # dir_path_o = 출력 이미지 폴더 경로
-dir_path_i = 'E:\\data\\bgrm'
-dir_path_o = 'E:\\data\\train\\binary\\datasets'
+dir_path_i = 'E:\\Pill Project\\rembg_data\\hue\\f'
+dir_path_o = 'E:\\Pill Project\\data_binary\\Elliptical'
 
 # Loop through all files in the directory
 for filename in os.listdir(dir_path_i):

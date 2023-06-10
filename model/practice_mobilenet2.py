@@ -56,7 +56,7 @@ base_model = tf.keras.applications.MobileNetV2(input_shape=(75, 75),
                                                weights='imagenet')
 
 
-    
+
 model.compile(loss=LossFunction,
               optimizer='adam',
               metrics=['acc'])
